@@ -5,3 +5,5 @@ phpunit.xml
 composer.lock
 .idea
 .vagrant
+data/
+.DS_Store
