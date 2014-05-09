@@ -59,13 +59,15 @@ apache::module { 'rewrite': }
 
 apache::vhost { "${host_name}":
   server_name   => "${host_name}",
-  serveraliases => [
-    "www.${host_name}"
-  ],
+  serveraliases => [ "www.${host_name}" ],
   docroot       => "/var/www/${host_name}/web/",
+  directory     => "/var/www/${host_name}/web/",
+  directory_allow_override => 'All',
+  directory_options => '-Indexes +FollowSymLinks',
   port          => '80',
   env_variables => [
-    'VAGRANT VAGRANT'
+    'VAGRANT VAGRANT',
+    'APP_ENV dev',
   ],
   priority      => '1',
 }
@@ -150,8 +152,8 @@ php::ini { 'php_ini_configuration':
 }
 
 class { 'mysql::server':
+  root_password => 'root',
   override_options => {
-    'root_password' => '',
     'mysqld' => {
       'bind_address' => '0.0.0.0'
     },
