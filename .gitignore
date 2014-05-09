@@ -7,3 +7,4 @@ composer.lock
 .vagrant
 data/
 .DS_Store
+config/config.ini

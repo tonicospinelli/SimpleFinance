@@ -1,19 +1,31 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../bootstrap.php';
 
-$app = new \Slim\Slim(array(
-    'templates.path' => __DIR__ . '/../templates'
-));
+use Respect\Rest\Router;
 
-\Slim\Extras\Views\Twig::$twigOptions = array(
-    'charset' => 'utf-8',
-    'cache' => realpath('../templates/cache')
+$router                   = new Router;
+$router->isAutoDispatched = false;
+
+$movementRouter = $router->any(
+    '/movements/*',
+    'InFog\SimpleFinance\Controller\MovementController',
+    array($config->pdo)
 );
-$app->view(new \Slim\Extras\Views\Twig());
 
-$app->get('/', function () use ($app) {
-    $app->render('index.html.twig');
+$indexRouter = $router->any('/', function () use ($movementRouter) {
+    return $movementRouter;
 });
 
-$app->run();
+$router->always(
+    'Accept',
+    array(
+        'text/html'                         => new InFog\Routine\Twig($config->twig),
+        'text/plain'                        => $json = new InFog\Routine\Json,
+        'application/x-www-form-urlencoded' => $json,
+        'application/json'                  => $json,
+        'text/json'                         => $json
+    )
+);
+
+print $router->run();
