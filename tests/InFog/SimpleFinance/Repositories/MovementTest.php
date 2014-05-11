@@ -11,7 +11,7 @@ class MovementTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->pdo = new \PDO(PDO_DSN);
-        $this->pdo->exec(file_get_contents(SETUP_DIR . 'create_sqlite_database.sql'));
+        $this->pdo->exec(file_get_contents(SETUP_DIR . '/create_sqlite_database.sql'));
 
         $this->repository = new Repository();
 

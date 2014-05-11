@@ -7,18 +7,18 @@ class MovementTest extends \PHPUnit_Framework_TestCase
     public function testCreateCollectionAddAndCountItems()
     {
         $collection = new \InFog\SimpleFinance\Collections\Movement();
-        $m = new \InFog\SimpleFinance\Entities\Movement();
+        $m          = new \InFog\SimpleFinance\Entities\Movement();
         $collection->add($m);
 
         $expected = 1;
-        $result = count($collection);
+        $result   = count($collection);
         $this->assertEquals($expected, $result);
 
         $m = new \InFog\SimpleFinance\Entities\Movement();
         $collection->add($m);
 
         $expected = 2;
-        $result = count($collection);
+        $result   = count($collection);
         $this->assertEquals($expected, $result);
     }
 
@@ -46,5 +46,22 @@ class MovementTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function testCreateCollectionAndGetGrandTotal()
+    {
+        $collection = new \InFog\SimpleFinance\Collections\Movement();
+
+        $m1 = new \InFog\SimpleFinance\Entities\Movement();
+        $m1->setAmount(new \InFog\SimpleFinance\Types\Money(10));
+        $m2 = new \InFog\SimpleFinance\Entities\Movement();
+        $m2->setAmount(new \InFog\SimpleFinance\Types\Money(90));
+
+        $collection->add($m1);
+        $collection->add($m2);
+
+        $expected = 100;
+
+        $this->assertEquals($expected, $collection->getGrandTotal()->getValue());
     }
 }

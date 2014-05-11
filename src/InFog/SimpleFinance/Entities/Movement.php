@@ -67,21 +67,33 @@ class Movement
         return $this->date;
     }
 
+    /**
+     * @param \InFog\SimpleFinance\Types\Money $amount
+     */
     public function setAmount(\InFog\SimpleFinance\Types\Money $amount)
     {
         $this->amount = $amount;
     }
 
+    /**
+     * @return \InFog\SimpleFinance\Types\Money
+     */
     public function getAmount()
     {
         return $this->amount;
     }
 
+    /**
+     * @param \InFog\SimpleFinance\Types\SmallString $name
+     */
     public function setName(\InFog\SimpleFinance\Types\SmallString $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return \InFog\SimpleFinance\Types\SmallString
+     */
     public function getName()
     {
         return $this->name;
