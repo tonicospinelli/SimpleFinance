@@ -3,6 +3,7 @@
 namespace InFog\SimpleFinance\Controller;
 
 use InFog\SimpleFinance\Entities\Movement;
+use InFog\SimpleFinance\Types\Money;
 use Respect\Rest\Routable;
 
 class MovementController implements Routable
@@ -17,19 +18,29 @@ class MovementController implements Routable
      */
     protected $repository;
 
-    function __construct(\PDO $pdo)
+    public function __construct(\PDO $pdo)
     {
         $this->pdo        = $pdo;
         $this->repository = new \InFog\SimpleFinance\Repositories\Movement();
         $this->repository->setPdo($this->pdo);
     }
 
-    public function get($action = null)
+    /**
+     * @return \InFog\SimpleFinance\Repositories\Movement
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    public function get($action = null, $id = null)
     {
         $response = array();
 
         if (is_null($action)) {
-            $response['entities'] = $this->repository->fetchAll();
+            $response['entities'] = $this->getRepository()->fetchAll();
+        } else if (is_numeric($id)) {
+            $response['entity'] = $this->getRepository()->fetch(array('id' => $id));
         } else {
             $response['entity'] = new Movement();
         }
@@ -40,31 +51,23 @@ class MovementController implements Routable
         ), $response);
     }
 
-    public function post($action = null)
+    public function post($action = null, $id = null)
     {
         if (!isset($_POST) || !isset($_POST['movement'])) {
             throw new \RuntimeException('Nothing to create a new movement');
         }
 
-        $movement = Movement::createFromArray($_POST['movement']);
-        $id       = $this->repository->save($movement);
+        if (!is_numeric($id)) {
+            $movement = Movement::createFromArray($_POST['movement']);
+        } else {
+            $movement = $this->getRepository()->fetch(array('id' => $id));
+            $movement->populate($_POST['movement']);
+        }
+
+        $id = $this->getRepository()->save($movement);
 
         if ($id) {
             header('Location: /movements');
         }
-    }
-
-    public function put()
-    {
-        return array(
-            '_view' => 'movement/index.html.twig'
-        );
-    }
-
-    public function delete()
-    {
-        return array(
-            '_view' => 'movement/index.html.twig'
-        );
     }
 }

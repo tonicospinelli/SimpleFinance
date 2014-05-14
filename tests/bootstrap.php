@@ -2,5 +2,8 @@
 
 include __DIR__ . '/../vendor/autoload.php';
 
-define('PDO_DSN', 'sqlite::memory:');
+// Project Constants
+define('APP_ROOT', __DIR__ . '/../');
+define('APP_CONFIG_DIR', __DIR__ . '/../config');
+define('APP_WEB_DIR', __DIR__ . '/../public');
 define('SETUP_DIR', __DIR__ . '/../setup');

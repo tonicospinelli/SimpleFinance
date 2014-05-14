@@ -11,19 +11,19 @@
 
     <div class="field">
         <label>Date</label>
-        <input placeholder="Date" type="date" name="movement[date]" pattern="dd/mm/yyyy">
+        <input placeholder="Date" type="date" name="movement[date]" value="{{ entity.date|date('Y-m-d') }}">
     </div>
     <div class="field">
         <label>Amount</label>
-        <input placeholder="Amount" type="number" step="0.00" name="movement[amount]">
+        <input placeholder="Amount" type="number" step="0.00" name="movement[amount]" value="{{ entity.amount.value }}">
     </div>
     <div class="field">
         <label>Name</label>
-        <input placeholder="Name" type="text" name="movement[name]">
+        <input placeholder="Name" type="text" name="movement[name]" value="{{ entity.name }}">
     </div>
     <div class="field">
         <label>Description</label>
-        <textarea name="movement[description]" placeholder="Some description"></textarea>
+        <textarea name="movement[description]" placeholder="Some description">{{ entity.description }}</textarea>
     </div>
     <button type="submit" class="ui blue submit button">Save</button>
 </form>

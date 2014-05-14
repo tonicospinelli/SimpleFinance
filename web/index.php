@@ -8,7 +8,7 @@ $router                   = new Router;
 $router->isAutoDispatched = false;
 
 $movementRouter = $router->any(
-    '/movements/*',
+    '/movements/*/*',
     'InFog\SimpleFinance\Controller\MovementController',
     array($config->pdo)
 );
